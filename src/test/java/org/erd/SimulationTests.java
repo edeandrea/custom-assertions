@@ -32,11 +32,11 @@ class SimulationTests {
 			.insurance(false)
 			.build();
 
-		assertThat(simulation.getAmount())
+		assertThat(simulation.amount())
 			.usingComparator(BigDecimal::compareTo)
 			.isBetween(new BigDecimal(1000), new BigDecimal(40000));
 
-		assertThat(simulation.getInstallments()).isBetween(2, 48);
+		assertThat(simulation.installments()).isBetween(2, 48);
 	}
 
 	@Test
@@ -126,7 +126,7 @@ class SimulationTests {
 		public SimulationAssert hasValidInstallments() {
 			isNotNull();
 
-			if (actual.getInstallments() < 2 || actual.getInstallments() > 48) {
+			if (actual.installments() < 2 || actual.installments() > 48) {
 				failWithMessage("Installments must be must be equal or greater than 2 and equal or less than 48");
 			}
 
@@ -139,7 +139,7 @@ class SimulationTests {
 			var minimum = new BigDecimal("1.000");
 			var maximum = new BigDecimal("40.000");
 
-			if (actual.getAmount().compareTo(minimum) < 0 || actual.getAmount().compareTo(maximum) > 0) {
+			if (actual.amount().compareTo(minimum) < 0 || actual.amount().compareTo(maximum) > 0) {
 				failWithMessage("Amount must be equal or greater than $ 1.000 or equal or less than than $ 40.000");
 			}
 
@@ -158,7 +158,7 @@ class SimulationTests {
 		public SimulationAssert hasNameEqualsTo(String name) {
 			isNotNull();
 
-			if (!Objects.equals(actual.getName(), name)) {
+			if (!Objects.equals(actual.name(), name)) {
 				failWithMessage("Expect the Simulation to have the name equals to %s", name);
 			}
 
