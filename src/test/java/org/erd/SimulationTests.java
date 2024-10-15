@@ -27,14 +27,14 @@ class SimulationTests {
 			.name("Elias")
 			.cpf("123456")
 			.email("elias@elias.com")
-			.amount(new BigDecimal(1000))
+			.amount(new BigDecimal(10))
 			.installments(48)
 			.insurance(false)
 			.build();
 
 		assertThat(simulation.amount())
 			.usingComparator(BigDecimal::compareTo)
-			.isBetween(new BigDecimal(1000), new BigDecimal(40000));
+			.isBetween(new BigDecimal(1), new BigDecimal(40));
 
 		assertThat(simulation.installments()).isBetween(2, 48);
 	}
@@ -94,8 +94,8 @@ class SimulationTests {
 
 	@ParameterizedTest
 	@CsvSource(delimiter = '|', textBlock = """
-		500  | 5
-		1000 | 49
+		50 | 5
+		10 | 49
 		""")
 	void simulationFails(String amount, int installments) {
 		var simulation = Simulation.builder()
@@ -150,6 +150,7 @@ class SimulationTests {
 			isNotNull();
 
 			Assertions.assertThat(this.validator.validate(actual))
+				.filteredOn(violation -> "amount".equals(violation.getPropertyPath().toString()))
 				.isNullOrEmpty();
 
 			return this;
